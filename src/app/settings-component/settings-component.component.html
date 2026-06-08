@@ -1,0 +1,52 @@
+<div class="max-w-3xl mx-auto mt-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Pengaturan Akun</h1>
+    <p class="text-gray-500 mt-2">Ubah email dan kata sandi akses HRD Anda.</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+    @if (message()) {
+      <div class="mb-6 p-4 rounded-lg" [ngClass]="{'bg-red-50 text-red-700 border-l-4 border-red-500': message()!.type === 'error', 'bg-green-50 text-green-700 border-l-4 border-green-500': message()!.type === 'success'}">
+        {{ message()!.text }}
+      </div>
+    }
+
+    <form (ngSubmit)="onUpdate()" class="space-y-6">
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email Baru (Opsional)</label>
+        <input type="email" [(ngModel)]="email" name="email"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+               placeholder="Kosongkan jika tidak ingin diubah">
+      </div>
+
+      <div class="pt-4 border-t border-gray-100">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password Lama (Wajib)</label>
+        <input type="password" required [(ngModel)]="oldPassword" name="oldPassword"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+               placeholder="Masukkan password saat ini">
+        <p class="mt-1 text-xs text-gray-500">Dibutuhkan untuk verifikasi keamanan HRD.</p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru (Opsional)</label>
+        <input type="password" [(ngModel)]="newPassword" name="newPassword"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+               placeholder="Kosongkan jika tidak ingin diubah">
+      </div>
+
+      <div class="flex justify-end pt-4">
+        <button type="submit" [disabled]="isLoading()"
+                class="px-6 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center gap-2">
+          @if (isLoading()) {
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            Menyimpan...
+          } @else {
+            Simpan Perubahan
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
