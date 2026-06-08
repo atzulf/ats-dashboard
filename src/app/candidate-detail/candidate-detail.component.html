@@ -1,0 +1,91 @@
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 transition-opacity" (click)="onClose()"></div>
+
+<!-- Slide-over Panel -->
+<div class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-300 translate-x-0 border-l border-gray-100">
+  
+  <!-- Header -->
+  <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+    <div class="flex items-center gap-4">
+      <div class="h-12 w-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold text-xl">
+        {{ candidate().name.charAt(0) }}
+      </div>
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">{{ candidate().name }}</h2>
+        <p class="text-sm font-medium text-gray-500">{{ candidate().role }}</p>
+      </div>
+    </div>
+    <button (click)="onClose()" class="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="flex-1 overflow-y-auto p-6 space-y-8">
+    
+    <!-- ATS Score Section -->
+    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-semibold text-gray-700 mb-1">ATS Match Score</h3>
+        <p class="text-xs text-gray-500">Based on required skills & experience</p>
+      </div>
+      <div class="flex items-center justify-center w-16 h-16 rounded-full border-4"
+           [class.border-green-500]="candidate().score >= 80"
+           [class.text-green-600]="candidate().score >= 80"
+           [class.border-yellow-400]="candidate().score >= 60 && candidate().score < 80"
+           [class.text-yellow-600]="candidate().score >= 60 && candidate().score < 80"
+           [class.border-red-400]="candidate().score < 60"
+           [class.text-red-600]="candidate().score < 60">
+        <span class="text-lg font-bold">{{ candidate().score }}%</span>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <section>
+      <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        Experience
+      </h3>
+      <div class="prose prose-sm text-gray-600 bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+        {{ candidate().experience }}
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
+        Education
+      </h3>
+      <div class="prose prose-sm text-gray-600 bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+        {{ candidate().education }}
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Extracted Skills
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        @for (skill of candidate().skills; track skill) {
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-teal-50 text-teal-700 border border-teal-100">
+            {{ skill }}
+          </span>
+        }
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+    <button (click)="onDelete()" class="px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors">
+      Hapus CV
+    </button>
+    <button (click)="onClose()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+      Tutup
+    </button>
+  </div>
+</div>
