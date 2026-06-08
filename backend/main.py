@@ -25,7 +25,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 DB_FILE = "ats.db"
 
 # JWT Config
-SECRET_KEY = "skripsweet_secret_key_2026"
+SECRET_KEY = "skripsweet_secret_key_2026_super_secure_32bytes"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 1 hari
 
