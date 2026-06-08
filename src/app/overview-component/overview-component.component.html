@@ -36,4 +36,20 @@
       </a>
     </div>
   </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-gray-900">Distribusi Skor Kandidat</h3>
+      <div class="relative h-64">
+        <canvas #scoreDistributionChart></canvas>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <h3 class="text-lg font-bold mb-4 text-gray-900">Top 5 Kandidat</h3>
+      <div class="relative h-64">
+        <canvas #topCandidatesChart></canvas>
+      </div>
+    </div>
+  </div>
 </div>
