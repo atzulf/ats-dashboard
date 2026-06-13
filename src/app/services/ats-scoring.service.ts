@@ -25,7 +25,7 @@ export class AtsScoringService {
 
   async loadCandidates() {
     try {
-      const data = await firstValueFrom(this.http.get<Candidate[]>('http://localhost:8000/api/candidates'));
+      const data = await firstValueFrom(this.http.get<Candidate[]>('https://backend-angular-ats.vercel.app/api/candidates'));
       this.candidates.set(data);
     } catch (error) {
       console.error('Gagal mengambil data kandidat dari database', error);
@@ -40,7 +40,7 @@ export class AtsScoringService {
   async deleteCandidate(id: string) {
     try {
       // Hapus dari Database backend
-      await firstValueFrom(this.http.delete(`http://localhost:8000/api/candidates/${id}`));
+      await firstValueFrom(this.http.delete(`https://backend-angular-ats.vercel.app/api/candidates/${id}`));
       // Hapus dari state UI lokal
       this.candidates.update(list => list.filter(c => c.id !== id));
     } catch (error) {
