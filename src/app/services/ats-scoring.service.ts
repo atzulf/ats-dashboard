@@ -2,6 +2,17 @@ import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
+const PRODUCTION_API_BASE_URL = 'https://backend-angular-ats.vercel.app';
+
+function apiUrl(path: string): string {
+  const baseUrl = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+    ? '/api'
+    : PRODUCTION_API_BASE_URL;
+
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${normalizedPath}`;
+}
+
 export interface Candidate {
   id: string;
   name: string;
@@ -25,7 +36,7 @@ export class AtsScoringService {
 
   async loadCandidates() {
     try {
-      const data = await firstValueFrom(this.http.get<Candidate[]>('https://backend-angular-ats.vercel.app/api/candidates'));
+      const data = await firstValueFrom(this.http.get<Candidate[]>(apiUrl('/candidates')));
       this.candidates.set(data);
     } catch (error) {
       console.error('Gagal mengambil data kandidat dari database', error);
@@ -40,7 +51,7 @@ export class AtsScoringService {
   async deleteCandidate(id: string) {
     try {
       // Hapus dari Database backend
-      await firstValueFrom(this.http.delete(`https://backend-angular-ats.vercel.app/api/candidates/${id}`));
+      await firstValueFrom(this.http.delete(apiUrl(`/candidates/${id}`)));
       // Hapus dari state UI lokal
       this.candidates.update(list => list.filter(c => c.id !== id));
     } catch (error) {
