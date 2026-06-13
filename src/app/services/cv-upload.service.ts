@@ -23,7 +23,7 @@ export class CvUploadService {
 
       // Call the FastAPI backend
       const response = await firstValueFrom(
-        this.http.post('http://localhost:8000/api/parse-cv', formData)
+        this.http.post('https://backend-angular-ats.vercel.app/api/parse-cv', formData)
       );
 
       this.uploadProgress.set(100);
