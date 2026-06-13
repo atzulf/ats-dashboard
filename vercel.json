@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://backend-angular-ats.vercel.app/api/:path*"
+    }
+  ]
+}
