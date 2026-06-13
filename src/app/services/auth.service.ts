@@ -3,6 +3,17 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
+const PRODUCTION_API_BASE_URL = 'https://backend-angular-ats.vercel.app';
+
+function apiUrl(path: string): string {
+  const baseUrl = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+    ? '/api'
+    : PRODUCTION_API_BASE_URL;
+
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${normalizedPath}`;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
@@ -32,7 +43,7 @@ export class AuthService {
       formData.set('username', email);
       formData.set('password', password);
 
-      const res: any = await firstValueFrom(this.http.post('https://backend-angular-ats.vercel.app/api/login', formData.toString(), {
+      const res: any = await firstValueFrom(this.http.post(apiUrl('/login'), formData.toString(), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }));
       
@@ -72,7 +83,7 @@ export class AuthService {
       if (email) payload.email = email;
       if (newPass) payload.new_password = newPass;
 
-      const res: any = await firstValueFrom(this.http.put('https://backend-angular-ats.vercel.app/api/users/me', payload));
+      const res: any = await firstValueFrom(this.http.put(apiUrl('/users/me'), payload));
       
       // Paksa logout agar sesi ter-refresh
       this.logout();
