@@ -31,7 +31,7 @@ export class AuthService {
       formData.set('username', email);
       formData.set('password', password);
 
-      const res: any = await firstValueFrom(this.http.post('http://localhost:8000/api/login', formData.toString(), {
+      const res: any = await firstValueFrom(this.http.post('https://backend-angular-ats.vercel.app/api/login', formData.toString(), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }));
       
@@ -51,7 +51,7 @@ export class AuthService {
       if (email) payload.email = email;
       if (newPass) payload.new_password = newPass;
 
-      const res: any = await firstValueFrom(this.http.put('http://localhost:8000/api/users/me', payload));
+      const res: any = await firstValueFrom(this.http.put('https://backend-angular-ats.vercel.app/api/users/me', payload));
       
       // Paksa logout agar sesi ter-refresh
       this.logout();
