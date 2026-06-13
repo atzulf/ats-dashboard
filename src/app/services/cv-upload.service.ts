@@ -2,6 +2,17 @@ import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
+const PRODUCTION_API_BASE_URL = 'https://backend-angular-ats.vercel.app';
+
+function apiUrl(path: string): string {
+  const baseUrl = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+    ? '/api'
+    : PRODUCTION_API_BASE_URL;
+
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${normalizedPath}`;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +34,7 @@ export class CvUploadService {
 
       // Call the FastAPI backend
       const response = await firstValueFrom(
-        this.http.post('https://backend-angular-ats.vercel.app/api/parse-cv', formData)
+        this.http.post(apiUrl('/parse-cv'), formData)
       );
 
       this.uploadProgress.set(100);
