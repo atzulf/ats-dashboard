@@ -27,10 +27,10 @@ export class LoginComponentComponent {
     this.isLoading.set(true);
     this.errorMsg.set('');
     
-    const success = await this.authService.login(this.email, this.password);
-    
-    if (!success) {
-      this.errorMsg.set('Email atau password salah');
+    const result = await this.authService.login(this.email, this.password);
+
+    if (!result.success) {
+      this.errorMsg.set(result.message);
     }
     
     this.isLoading.set(false);

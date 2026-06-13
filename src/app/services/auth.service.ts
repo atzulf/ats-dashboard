@@ -1,5 +1,5 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
@@ -25,9 +25,10 @@ export class AuthService {
     return null;
   }
 
-  async login(email: string, password: string): Promise<boolean> {
+  async login(email: string, password: string): Promise<{ success: boolean; message: string }> {
     try {
       const formData = new URLSearchParams();
+      formData.set('grant_type', 'password');
       formData.set('username', email);
       formData.set('password', password);
 
@@ -38,10 +39,30 @@ export class AuthService {
       localStorage.setItem('access_token', res.access_token);
       this.isAuthenticated.set(true);
       this.router.navigate(['/']);
-      return true;
+      return { success: true, message: 'Login berhasil' };
     } catch (error) {
       console.error('Login failed', error);
-      return false;
+
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 0) {
+          return { success: false, message: 'Gagal terhubung ke backend. Cek koneksi atau CORS.' };
+        }
+
+        if (error.status === 401) {
+          return { success: false, message: 'Email atau password salah' };
+        }
+
+        if (error.status === 422) {
+          return { success: false, message: 'Format request login tidak sesuai dengan backend' };
+        }
+
+        return {
+          success: false,
+          message: error.error?.detail || error.message || 'Login gagal'
+        };
+      }
+
+      return { success: false, message: 'Login gagal' };
     }
   }
 
